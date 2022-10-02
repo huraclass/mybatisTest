@@ -9,4 +9,14 @@ import org.springframework.stereotype.Service;
 public class TimeScheduleService {
     private final TimeScheduleMapper mapper;
 
+    //search
+
+    //insert
+
+    //delete
+
+    //update
+
+
+
 }
