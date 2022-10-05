@@ -14,8 +14,7 @@ public class CalenderService {
 
     //select
     public List<Calender> findAllCalender(int userCode) {
-        List<Calender> list = mapper.selectAllById(userCode);
-        return list;
+        return mapper.selectAllById(userCode);
     }
 
     //insert

@@ -9,18 +9,14 @@ import java.util.List;
 @Mapper
 public interface TimeScheduleMapper {
     //select
-    @Select("select * from time_schedule where user_code = #{user_code}")
+    @Select("select * from time_schedule where user_code = #{userCode}")
     public List<TimeSchedule> searchTimeScheduleByUserCode(int userCode);
 
     //insert
-    @Insert("insert into time_schedule values(#{},#{},#{},#{},#{},#{},#{},#{})")
+    @Insert("insert into time_schedule values(#{userCode},#{subject},#{professor},#{day},#{startTime},#{endTime},#{room},#{alarm})")
     public void insertIntoTimeSchedule(TimeSchedule timeSchedule);
 
     //delete
     @Delete("delete from time_schedule where user_code = #{userCode}")
     public void deleteTimeScheduleByUserCode(int userCode);
-
-    //update
-
-
 }
