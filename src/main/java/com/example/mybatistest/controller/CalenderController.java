@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Log4j2
 @RestController
 @ResponseBody
@@ -19,14 +21,14 @@ public class CalenderController {
     private final CalenderService service;
 
     //select
-    @RequestMapping("/select/*")
+    @RequestMapping("/select")
     public List<Calender> selectAllCalender(@RequestParam("user_code") int userCode) {
         List<Calender> calenderList = service.findAllCalender(userCode);
         return calenderList;
     }
 
     //insert
-    @RequestMapping("/insert/*")
+    @RequestMapping("/insert")
     public ResponseEntity insertCalender(@RequestBody Calender calender) {
         try {
             service.insertCalender(calender);
@@ -38,7 +40,7 @@ public class CalenderController {
     }
 
     //delete
-    @RequestMapping("/delete/*")
+    @RequestMapping("/delete")
     public ResponseEntity deleteCalender(@RequestBody Calender calender) {
         try {
             service.deleteCalender(calender);
@@ -50,7 +52,7 @@ public class CalenderController {
     }
 
     //update
-    @RequestMapping("/update/*")
+    @RequestMapping("/update")
     public ResponseEntity updateCalender(@RequestBody Calender calender) {
         try {
             service.updateCalender(calender);
@@ -59,5 +61,18 @@ public class CalenderController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping("/test")
+    public List<Calender> test(@RequestBody Calender calender) {
+        List<Calender> list = new ArrayList<>();
+        list.add(calender);
+        list.add(new Calender(20, 200, 1010, 10, 10, "tiger", "is"));
+        return list;
+    }
+
+    @RequestMapping("/test2")
+    public String test2() {
+        return "hello";
     }
 }

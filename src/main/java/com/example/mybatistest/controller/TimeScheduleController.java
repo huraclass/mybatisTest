@@ -18,13 +18,13 @@ public class TimeScheduleController {
     private final TimeScheduleService service;
 
     //search
-    @RequestMapping("/search/*")
+    @RequestMapping("/search")
     public List<TimeSchedule> searchTimeScheduleByID(@RequestParam("userCode") int userCode) {
         return service.findTimeSchedule(userCode);
     }
 
     //insert
-    @RequestMapping("/insert/*")
+    @RequestMapping("/insert")
     public ResponseEntity insertTimeSchedule(@RequestBody TimeSchedule timeSchedule) {
         try {
             service.insertTimeSchedule(timeSchedule);
@@ -36,7 +36,7 @@ public class TimeScheduleController {
     }
 
     //delete
-    @RequestMapping("/delete/*")
+    @RequestMapping("/delete")
     public ResponseEntity deleteTimeSchedule(@RequestParam("userCode") int userCode) {
         try {
             service.deleteTimeScheduleService(userCode);
@@ -46,4 +46,5 @@ public class TimeScheduleController {
         }
         return new ResponseEntity(HttpStatus.OK);
     }
+
 }

@@ -43,32 +43,32 @@ public class WeatherGet {
         String json = sb.toString();
     }
 
-    private void jsonMapper(String json) {
-        String jsonStr = json;
-        JSONObject jsonObject = new JSONObject(jsonStr);
-        JSONObject responseJsonObject = jsonObject.getJSONObject("response");
-        JSONObject jsonBody = responseJsonObject.getJSONObject("body");
-        JSONObject jsonItems = jsonBody.getJSONObject("items");
-        JSONArray jsonArray = jsonItems.getJSONArray("item");
-
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject arrayJSONObject = jsonArray.getJSONObject(i);
-            String data = arrayJSONObject.getString("baseDate");
-            String time = arrayJSONObject.getString("baseTime");
-            String category = arrayJSONObject.getString("category");
-            int x = arrayJSONObject.getInt("nx");
-            int y = arrayJSONObject.getInt("ny");
-            String value = arrayJSONObject.getString("obsrValue");
-            Weather item = Weather.builder()
-                    .date(data)
-                    .time(time)
-                    .category(category)
-                    .x(x)
-                    .y(y)
-                    .value(value)
-                    .build();
-            System.out.println("item = " + item);
-        }
-    }
+//    private void jsonMapper(String json) {
+//        String jsonStr = json;
+//        JSONObject jsonObject = new JSONObject(jsonStr);
+//        JSONObject responseJsonObject = jsonObject.getJSONObject("response");
+//        JSONObject jsonBody = responseJsonObject.getJSONObject("body");
+//        JSONObject jsonItems = jsonBody.getJSONObject("items");
+//        JSONArray jsonArray = jsonItems.getJSONArray("item");
+//
+//
+//        for (int i = 0; i < jsonArray.length(); i++) {
+//            JSONObject arrayJSONObject = jsonArray.getJSONObject(i);
+//            String data = arrayJSONObject.getString("baseDate");
+//            String time = arrayJSONObject.getString("baseTime");
+//            String category = arrayJSONObject.getString("category");
+//            int x = arrayJSONObject.getInt("nx");
+//            int y = arrayJSONObject.getInt("ny");
+//            String value = arrayJSONObject.getString("obsrValue");
+//            Weather item = Weather.builder()
+//                    .date(data)
+//                    .time(time)
+//                    .category(category)
+//                    .x(x)
+//                    .y(y)
+//                    .value(value)
+//                    .build();
+//            System.out.println("item = " + item);
+//        }
+//    }
 }
