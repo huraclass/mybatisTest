@@ -23,8 +23,8 @@ public class CalenderService {
     }
 
     //delete
-    public void deleteCalender(Calender calender) {
-        mapper.deleteCalender(calender);
+    public void deleteCalender(int scheduleID,int userCode) {
+        mapper.deleteCalender(scheduleID,userCode);
     }
 
     //update

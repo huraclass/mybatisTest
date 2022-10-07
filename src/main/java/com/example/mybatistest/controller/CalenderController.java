@@ -41,11 +41,11 @@ public class CalenderController {
 
     //delete
     @RequestMapping("/delete")
-    public ResponseEntity deleteCalender(@RequestBody Calender calender) {
+    public ResponseEntity deleteCalender(@RequestParam("scheduleID")int scheduleID,@RequestParam("userCode")int userCode) {
         try {
-            service.deleteCalender(calender);
+            service.deleteCalender(scheduleID,userCode);
         } catch (Exception e) {
-            log.error(calender + "객체 delete 중 에러 발생");
+            log.error(scheduleID + "객체 delete 중 에러 발생");
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(HttpStatus.OK);

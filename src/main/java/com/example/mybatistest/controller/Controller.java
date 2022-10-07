@@ -3,17 +3,18 @@ package com.example.mybatistest.controller;
 import com.example.mybatistest.domain.Person;
 import com.example.mybatistest.service.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ResponseBody
 @RequiredArgsConstructor
 public class Controller {
+    public void test() {
+
+    }
     private final PersonService personService;
 
     @GetMapping("/persons")
@@ -30,5 +31,10 @@ public class Controller {
                 .build();
         Person man = personService.getPerson(person);
         return man;
+    }
+
+    @RequestMapping("/person/test")
+    public Person test(@RequestBody Person person) {
+        return person;
     }
 }

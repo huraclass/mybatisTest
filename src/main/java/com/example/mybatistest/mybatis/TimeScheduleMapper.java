@@ -10,7 +10,7 @@ import java.util.List;
 public interface TimeScheduleMapper {
     //select
     @Select("select * from time_schedule where user_code = #{userCode}")
-    public List<TimeSchedule> searchTimeScheduleByUserCode(int userCode);
+    public List<TimeSchedule> searchTimeScheduleByUserCode(@Param("userCode") int userCode);
 
     //insert
     @Insert("insert into time_schedule values(#{userCode},#{subject},#{professor},#{day},#{startTime},#{endTime},#{room},#{alarm})")
@@ -18,5 +18,5 @@ public interface TimeScheduleMapper {
 
     //delete
     @Delete("delete from time_schedule where user_code = #{userCode}")
-    public void deleteTimeScheduleByUserCode(int userCode);
+    public void deleteTimeScheduleByUserCode(@Param("userCode") int userCode);
 }
