@@ -1,6 +1,7 @@
 package com.example.mybatistest.controller;
 
 import com.example.mybatistest.domain.Calender;
+import com.example.mybatistest.domain.UserCode;
 import com.example.mybatistest.service.CalenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,8 +23,8 @@ public class CalenderController {
 
     //select
     @RequestMapping("/select")
-    public List<Calender> selectAllCalender(@RequestParam("user_code") int userCode) {
-        List<Calender> calenderList = service.findAllCalender(userCode);
+    public List<Calender> selectAllCalender(@RequestBody UserCode userCode) {
+        List<Calender> calenderList = service.findAllCalender(userCode.getUserCode());
         return calenderList;
     }
 
@@ -41,9 +42,9 @@ public class CalenderController {
 
     //delete
     @RequestMapping("/delete")
-    public ResponseEntity deleteCalender(@RequestParam("scheduleID")int scheduleID,@RequestParam("userCode")int userCode) {
+    public ResponseEntity deleteCalender(@RequestBody UserCode scheduleID,@RequestBody UserCode userCode) {
         try {
-            service.deleteCalender(scheduleID,userCode);
+            service.deleteCalender(scheduleID.getUserCode(),userCode.getUserCode());
         } catch (Exception e) {
             log.error(scheduleID + "객체 delete 중 에러 발생");
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,6 +66,7 @@ public class CalenderController {
 
     @RequestMapping("/test")
     public List<Calender> test(@RequestBody Calender calender) {
+        System.out.println("calender = " + calender);
         List<Calender> list = new ArrayList<>();
         list.add(calender);
         list.add(new Calender(20, 200, 1010, 10, 10, "tiger", "is"));

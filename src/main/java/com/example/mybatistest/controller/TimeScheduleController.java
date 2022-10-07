@@ -1,6 +1,7 @@
 package com.example.mybatistest.controller;
 
 import com.example.mybatistest.domain.TimeSchedule;
+import com.example.mybatistest.domain.UserCode;
 import com.example.mybatistest.service.TimeScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,16 +17,23 @@ import java.util.List;
 public class TimeScheduleController {
 
     private final TimeScheduleService service;
-//
     //search
     @RequestMapping("/search")
-    public List<TimeSchedule> searchTimeScheduleByID(@RequestParam("userCode") int userCode) {
-        return service.findTimeSchedule(userCode);
+    public List<TimeSchedule> searchTimeScheduleByID(@RequestBody UserCode userCode) {
+        return service.findTimeSchedule(userCode.getUserCode());
+    }
+
+    @RequestMapping("/test")
+    public int test(@RequestBody String userCode) {
+        System.out.println("userCode = " + userCode);
+        int num = Integer.parseInt(userCode);
+        return num;
     }
 
     //insert
     @RequestMapping("/insert")
     public ResponseEntity insertTimeSchedule(@RequestBody TimeSchedule timeSchedule) {
+
         try {
             service.insertTimeSchedule(timeSchedule);
         } catch (Exception e) {
@@ -37,7 +45,7 @@ public class TimeScheduleController {
 
     //delete
     @RequestMapping("/delete")
-    public ResponseEntity deleteTimeSchedule(@RequestParam("userCode") int userCode) {
+    public ResponseEntity deleteTimeSchedule(@RequestBody int userCode) {
         try {
             service.deleteTimeScheduleService(userCode);
         } catch (Exception e) {

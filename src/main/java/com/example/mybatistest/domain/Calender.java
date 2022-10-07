@@ -1,14 +1,12 @@
 package com.example.mybatistest.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @Builder
 @Setter
+@ToString
 public class Calender {
     private int scheduleID;
     private int userCode;
