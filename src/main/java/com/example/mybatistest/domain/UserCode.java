@@ -8,5 +8,5 @@ import lombok.*;
 @ToString
 @Builder
 public class UserCode {
-    private int userCode;
+    private String userCode;
 }

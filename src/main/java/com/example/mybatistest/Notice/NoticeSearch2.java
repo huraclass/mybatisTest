@@ -1,33 +1,32 @@
 package com.example.mybatistest.Notice;
 
-import java.io.*;
-import java.lang.Integer;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.WebServlet;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
 import java.util.Vector;
 
-@WebServlet(urlPatterns = "/Notice/Search")
-public class NoticeSearch extends HttpServlet 
+@WebServlet(urlPatterns = "/Notice/Search2")
+public class NoticeSearch2 extends HttpServlet
 {
 	private static final long serialVersionUID = 2L;
 	private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	private final String JDBC_URL = "jdbc:mysql://database-1.cuqcz3ydffen.ap-northeast-2.rds.amazonaws.com:3306/test";
 	private final String USER = "admin";
 	private final String PASS = "testadmindb";
- 	
- 	public NoticeSearch() 
+
+ 	public NoticeSearch2()
  	{
  		try {
  			Class.forName(JDBC_DRIVER);
@@ -40,36 +39,29 @@ public class NoticeSearch extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
+		StringBuffer jsonBuffer = new StringBuffer();
+		String strLine = null;
+		BufferedReader reader = request.getReader();
+		while ((strLine = reader.readLine()) != null)
+			jsonBuffer.append(strLine);
 
-		int ID = Integer.parseInt(request.getParameter("id"));
-		int subjectID = Integer.parseInt(request.getParameter("SubjectID"));
-		String name = request.getParameter("Name");
-		String content = request.getParameter("Content");
-
-
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-//		ServletContext context = getServletContext( );
-//		context.log(jsonBuffer.toString());
-//
-//		JSONObject reqJson = new JSONObject();
-//		JSONParser parser = new JSONParser();
-
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("변환에실패");
-//			e.printStackTrace();
-//		}
+		ServletContext context = getServletContext( );
+		//context.log(jsonBuffer.toString());
+		
+		JSONObject reqJson = new JSONObject();
+		JSONParser parser = new JSONParser();
 
 
-//		context.log(subjectID);
-		Vector<NoticeBean> noticeList = SearchData(ID,subjectID,name,content);
+		try {
+			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+		} catch(ParseException e) {
+			System.out.println("변환에실패");
+			e.printStackTrace();
+		}
+
+
+		//context.log(reqJson.get("SubjectID").toString());
+		Vector<NoticeBean> noticeList = SearchData(reqJson);
 
 		if(noticeList.size() > 0)
 		{
@@ -102,33 +94,32 @@ public class NoticeSearch extends HttpServlet
 	        out.println(resJson.toString());
 		}
     }
-
-	public Vector<NoticeBean> SearchData(int id,int subjectid,String name,String content)
+	
+	public Vector<NoticeBean> SearchData(JSONObject jsonData)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
        ResultSet rs = null;
        Vector<NoticeBean> noticeList = new Vector<NoticeBean>();
 
-       try
+       try 
        {
           String strQuery = "";
           String strCondition = "";
-
-//          int id = Integer.parseInt(jsonData.get("ID").toString());
-//          int subjectid = Integer.parseInt(jsonData.get("SubjectID").toString());
-//          String name = jsonData.get("Name").toString();
-//          String content = jsonData.get("Content").toString();
+          
+          int id = Integer.parseInt(jsonData.get("ID").toString());
+          int subjectid = Integer.parseInt(jsonData.get("SubjectID").toString());
+          String name = jsonData.get("Name").toString();
+          String content = jsonData.get("Content").toString();
+          boolean withContnet = false;
 
 		   System.out.println("id = " + id);
 		   System.out.println("subjectid = " + subjectid);
 		   System.out.println("name = " + name);
 		   System.out.println("content = " + content);
 
-          boolean withContnet = false;
-
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-
+          
           // 공지사항 id가 -1이 아니면 컨텐츠 내용까지 조회
     	  if(id != -1)
     	  {
@@ -151,17 +142,17 @@ public class NoticeSearch extends HttpServlet
 
         	  if( subjectid != -1 )
             	  strCondition = String.format(" where SubjectID = %d", subjectid);
-
+    		  
         	  if(!name.isEmpty())
         	  {
-        		  if(!strCondition.isEmpty())
+        		  if(!strCondition.isEmpty()) 
         			  strCondition += String.format(" and Name like '%%%s%%'", name);
         		  else
         			  strCondition += String.format(" where Name like '%%%s%%'", name);
         	  }
         	  if(!content.isEmpty())
         	  {
-        		  if(!strCondition.isEmpty())
+        		  if(!strCondition.isEmpty()) 
         			  strCondition += String.format(" and Content like '%%%s%%'", content);
         		  else
         			  strCondition += String.format(" where Content like '%%%s%%'", content);
@@ -173,7 +164,7 @@ public class NoticeSearch extends HttpServlet
 
   		  stmt = conn.createStatement();
   		  rs = stmt.executeQuery(strQuery);
-
+  		  
 		  while (rs.next()) {
 			  NoticeBean bean = new NoticeBean();
 			  bean.setID(rs.getInt("ID"));
@@ -190,8 +181,8 @@ public class NoticeSearch extends HttpServlet
         		  bean.setSubjectName("");
         	  }
 			  noticeList.addElement(bean);
-	      }
-
+	      }  		  
+		  
        } catch (Exception ex) {
     	   System.out.println("Exception" + ex);
        } finally {
@@ -199,7 +190,7 @@ public class NoticeSearch extends HttpServlet
 	   	   if(stmt!=null) try{stmt.close();}catch(SQLException e){}
 	   	   if(conn!=null) try{conn.close();}catch(SQLException e){}
        }
-
+       
        return noticeList;
 	}
 }

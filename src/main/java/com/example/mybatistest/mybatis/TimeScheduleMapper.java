@@ -13,7 +13,7 @@ public interface TimeScheduleMapper {
     public List<TimeSchedule> searchTimeScheduleByUserCode(@Param("userCode") int userCode);
 
     //insert
-    @Insert("insert into time_schedule values(#{userCode},#{subject},#{professor},#{day},#{startTime},#{endTime},#{room},#{alarm})")
+    @Insert("insert into time_schedule values(#{scheduleID},#{userCode},#{subject},#{professor},#{day},#{startTime},#{endTime},#{room},#{alarm})")
     public void insertIntoTimeSchedule(TimeSchedule timeSchedule);
 
     //delete

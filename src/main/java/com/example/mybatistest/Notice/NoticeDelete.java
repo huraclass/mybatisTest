@@ -40,6 +40,10 @@ public class NoticeDelete extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
+
+		int id = Integer.parseInt(request.getParameter("ID"));
+
+
 		StringBuffer jsonBuffer = new StringBuffer();
 		String strLine = null;
 
@@ -49,17 +53,17 @@ public class NoticeDelete extends HttpServlet
 
 		//ServletContext context = getServletContext( );
 		//context.log(jsonBuffer.toString());
-		
+
 		JSONObject reqJson = new JSONObject();
 		JSONParser parser = new JSONParser();
-		
+
 		try {
 			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
 		} catch(ParseException e) {
 			System.out.println("json parsing error");
 			e.printStackTrace();
 		}
-			
+
 		JSONObject resJson = new JSONObject();
 		if( DeleteData(reqJson) )
 			resJson.put("result", "OK");

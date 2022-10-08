@@ -1,6 +1,7 @@
 package com.example.mybatistest.controller;
 
 import com.example.mybatistest.domain.TimeSchedule;
+import com.example.mybatistest.domain.TimeScheduleInput;
 import com.example.mybatistest.domain.UserCode;
 import com.example.mybatistest.service.TimeScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -19,42 +20,29 @@ public class TimeScheduleController {
     private final TimeScheduleService service;
     //search
     @RequestMapping("/search")
-    public List<TimeSchedule> searchTimeScheduleByID(@RequestBody UserCode userCode) {
-        return service.findTimeSchedule(userCode.getUserCode());
-    }
-
-    @RequestMapping("/test")
-    public int test(@RequestBody String userCode) {
-        System.out.println("userCode = " + userCode);
-        int num = Integer.parseInt(userCode);
-        return num;
+    public List<TimeSchedule> searchTimeScheduleByID(UserCode code) {
+        System.out.println("userCode = " + code);
+        return service.findTimeSchedule(Integer.parseInt(code.getUserCode()));
     }
 
     //insert
     @RequestMapping("/insert")
-    public ResponseEntity insertTimeSchedule(@RequestBody TimeSchedule timeSchedule) {
-
+    public void insertTimeSchedule(TimeScheduleInput timeSchedule) {
+        TimeSchedule time = TimeSchedule.timeScheduleMapper(timeSchedule);
         try {
-            service.insertTimeSchedule(timeSchedule);
+            service.insertTimeSchedule(time);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     //delete
     @RequestMapping("/delete")
-    public ResponseEntity deleteTimeSchedule(@RequestBody int userCode) {
+    public void deleteTimeSchedule(UserCode userCode) {
         try {
-            service.deleteTimeScheduleService(userCode);
+            service.deleteTimeScheduleService(Integer.parseInt(userCode.getUserCode()));
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(HttpStatus.OK);
     }
-
-
-
 }

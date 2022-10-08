@@ -5,6 +5,7 @@ import com.example.mybatistest.mybatis.CalenderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -29,6 +30,11 @@ public class CalenderService {
 
     //update
     public void updateCalender(Calender calender) {
-        mapper.updateCalender(calender);
+
+        try {
+            mapper.updateCalender(calender);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
