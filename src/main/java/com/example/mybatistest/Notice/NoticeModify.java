@@ -40,38 +40,46 @@ public class NoticeModify extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-		StringBuffer jsonBuffer = new StringBuffer();
-		String strLine = null;
 
-		BufferedReader reader = request.getReader();
-		while ((strLine = reader.readLine()) != null)
-			jsonBuffer.append(strLine);
 
-		//ServletContext context = getServletContext( );
-		//context.log(jsonBuffer.toString());
-		
-		JSONObject reqJson = new JSONObject();
-		JSONParser parser = new JSONParser();
-		
-		try {
-			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-		} catch(ParseException e) {
-			System.out.println("변환에 실패");
-			e.printStackTrace();
-		}
-			
-		JSONObject resJson = new JSONObject();
-		if( ModifyData(reqJson) )
-			resJson.put("result", "OK");
-		else
-			resJson.put("result", "Fail");
-				
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.println(resJson.toString());
+
+
+//		StringBuffer jsonBuffer = new StringBuffer();
+//		String strLine = null;
+//
+//		BufferedReader reader = request.getReader();
+//		while ((strLine = reader.readLine()) != null)
+//			jsonBuffer.append(strLine);
+//
+//		//ServletContext context = getServletContext( );
+//		//context.log(jsonBuffer.toString());
+//
+//		JSONObject reqJson = new JSONObject();
+//		JSONParser parser = new JSONParser();
+//
+//		try {
+//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+//		} catch(ParseException e) {
+//			System.out.println("변환에 실패");
+//			e.printStackTrace();
+//		}
+//
+//		JSONObject resJson = new JSONObject();
+//		if( ModifyData(reqJson) )
+//			resJson.put("result", "OK");
+//		else
+//			resJson.put("result", "Fail");
+//
+//        response.setContentType("application/json");
+//        PrintWriter out = response.getWriter();
+//        out.println(resJson.toString());
+
+		String name = request.getParameter("Name");
+		int id = Integer.parseInt(request.getParameter("ID"));
+		String content = request.getParameter("Content");
     }
 	
- 	public boolean ModifyData(JSONObject jsonData)
+ 	public boolean ModifyData(int id,String name,String content)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -79,17 +87,18 @@ public class NoticeModify extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          int id = Integer.parseInt(jsonData.get("ID").toString());
+//          int id = Integer.parseInt(jsonData.get("ID").toString());
           if( id > 0)
           {
         	  String strUpdate = "";
         	  
-        	  if( !jsonData.get("Name").toString().isEmpty() )		strUpdate = String.format("Name = '%s'", jsonData.get("Name").toString());
-        	  if( !jsonData.get("Content").toString().isEmpty() )
+        	  if( !name.isEmpty() )
+				  strUpdate = name;
+        	  if( !content.isEmpty() )
         		  if(!strUpdate.isEmpty())
-        			  strUpdate = String.format(", Content = '%s'", jsonData.get("Content").toString());
+        			  strUpdate = content;
         		  else
-        			  strUpdate = String.format("Content = '%s'", jsonData.get("Content").toString());
+        			  strUpdate = content;
         	  
 	          String strQuery = String.format("update notice set %s where ID = %d", strUpdate, id);
 	          //ServletContext context = getServletContext( );

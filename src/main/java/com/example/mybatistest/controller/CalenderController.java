@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,15 @@ public class CalenderController {
     private final CalenderService service;
 
     //select
+
     @RequestMapping("/select")
-    public List<Calender> selectAllCalender(UserCode userCode) {
-        List<Calender> calenderList = service.findAllCalender(Integer.parseInt(userCode.getUserCode()));
+    public List<Calender> selectAllCalender(int userCode) {
+        List<Calender> calenderList = service.findAllCalender(userCode);
         return calenderList;
     }
 
     //insert
+
     @RequestMapping("/insert")
     public void insertCalender(CalenderInput calender) {
         Calender cal = Calender.calenderMapper(calender);
@@ -39,6 +42,7 @@ public class CalenderController {
     }
 
     //delete
+
     @RequestMapping("/delete")
     public void deleteCalender(int scheduleID, UserCode userCode) {
         System.out.println("scheduleID = " + scheduleID);
@@ -51,6 +55,7 @@ public class CalenderController {
     }
 
     //update
+
     @RequestMapping("/update")
     public void updateCalender(CalenderInput calender) {
         Calender cal = Calender.calenderMapper(calender);

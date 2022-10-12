@@ -7,6 +7,7 @@ import com.example.mybatistest.service.TimeScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +20,15 @@ public class TimeScheduleController {
 
     private final TimeScheduleService service;
     //search
+
     @RequestMapping("/search")
-    public List<TimeSchedule> searchTimeScheduleByID(UserCode code) {
-        System.out.println("userCode = " + code);
-        return service.findTimeSchedule(Integer.parseInt(code.getUserCode()));
+    public List<TimeSchedule> searchTimeScheduleByID(int userCode) {
+        System.out.println("userCode = " + userCode);
+        return service.findTimeSchedule(userCode);
     }
 
     //insert
+
     @RequestMapping("/insert")
     public void insertTimeSchedule(TimeScheduleInput timeSchedule) {
         TimeSchedule time = TimeSchedule.timeScheduleMapper(timeSchedule);
@@ -37,10 +40,12 @@ public class TimeScheduleController {
     }
 
     //delete
+
     @RequestMapping("/delete")
-    public void deleteTimeSchedule(UserCode userCode) {
+    public void deleteTimeSchedule(int userCode) {
+        System.out.println("userCode = " + userCode);
         try {
-            service.deleteTimeScheduleService(Integer.parseInt(userCode.getUserCode()));
+            service.deleteTimeScheduleService(userCode);
         } catch (Exception e) {
             e.printStackTrace();
         }

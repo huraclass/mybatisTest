@@ -1,7 +1,6 @@
 package com.example.mybatistest.Notice;
 
 import java.io.*;
-import java.lang.Integer;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +17,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-@WebServlet(urlPatterns = "/Subject/Modify")
-public class SubjectModify extends HttpServlet 
+@WebServlet(urlPatterns = "/User/Insert")
+public class UserInsert extends HttpServlet 
 {
 	private static final long serialVersionUID = 2L;
 	private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -27,7 +26,7 @@ public class SubjectModify extends HttpServlet
 	private final String USER = "admin";
 	private final String PASS = "testadmindb";
  	
- 	public SubjectModify() 
+ 	public UserInsert() 
  	{
  		try {
  			Class.forName(JDBC_DRIVER);
@@ -41,8 +40,9 @@ public class SubjectModify extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-		int id = Integer.parseInt(request.getParameter("Id"));
-		String name = request.getParameter("Name");
+		String id = request.getParameter("Id");
+		String pass = request.getParameter("Password");
+		String name = request.getParameter("NickName");
 
 //		StringBuffer jsonBuffer = new StringBuffer();
 //		String strLine = null;
@@ -63,11 +63,12 @@ public class SubjectModify extends HttpServlet
 //			System.out.println("변환에 실패");
 //			e.printStackTrace();
 //		}
-
-		ModifyData(id, name);
 			
-//		JSONObject resJson = new JSONObject();
-//		if( ModifyData(reqJson) )
+		//context.log(reqJson.get("Name").toString());
+
+		//JSONObject resJson = new JSONObject();
+		InsertData(id, pass, name);
+//		if( InsertData(id,pass,name) )
 //			resJson.put("result", "OK");
 //		else
 //			resJson.put("result", "Fail");
@@ -77,28 +78,29 @@ public class SubjectModify extends HttpServlet
 //        out.println(resJson.toString());
     }
 	
- 	public boolean ModifyData(int id,String name)
+	public boolean InsertData(String Id,String Password,String NickName)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
        Boolean rtn = null;
+       
+//       String Id;
+//       String Password;
+//       String NickName;
+//
+//       Id = jsonData.get("Id").toString();
+//       Password = jsonData.get("Password").toString();
+//       NickName = jsonData.get("NickName").toString();
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
+          String strQuery = String.format("insert into user (id, password, nickname) values ('%s', '%s', '%s')", Id, Password, NickName);
+          //ServletContext context = getServletContext( );
+  		  //context.log(strQuery);
 
-          if( id > 0)
-          {
-	          String strQuery = String.format("update subject set Name = '%s'where ID = %d",name, id);
-	          //ServletContext context = getServletContext( );
-	          //context.log(strQuery);
-	
-	  		  stmt = conn.createStatement();
-	          rtn = stmt.execute(strQuery);
-	          return true;
-          }
-          else
-	          return false;
-        	  
+  		  stmt = conn.createStatement();
+          rtn = stmt.execute(strQuery);
+          return true;
        } catch (Exception ex) {
           System.out.println("Exception" + ex);
        } finally {
@@ -106,7 +108,7 @@ public class SubjectModify extends HttpServlet
 	      if(conn!=null) try{conn.close();}catch(SQLException e){}
        }
        
-       return true;
+       return false;
 	}
 }
 

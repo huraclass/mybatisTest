@@ -40,38 +40,42 @@ public class SubjectDelete extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-		StringBuffer jsonBuffer = new StringBuffer();
-		String strLine = null;
 
-		BufferedReader reader = request.getReader();
-		while ((strLine = reader.readLine()) != null)
-			jsonBuffer.append(strLine);
+		int id = Integer.parseInt(request.getParameter("Id"));
 
-		//ServletContext context = getServletContext( );
-		//context.log(jsonBuffer.toString());
-		
-		JSONObject reqJson = new JSONObject();
-		JSONParser parser = new JSONParser();
-		
-		try {
-			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-		} catch(ParseException e) {
-			System.out.println("변환에 실패");
-			e.printStackTrace();
-		}
-			
-		JSONObject resJson = new JSONObject();
-		if( DeleteData(reqJson) )
-			resJson.put("result", "OK");
-		else
-			resJson.put("result", "Fail");
-				
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.println(resJson.toString());
+//		StringBuffer jsonBuffer = new StringBuffer();
+//		String strLine = null;
+//
+//		BufferedReader reader = request.getReader();
+//		while ((strLine = reader.readLine()) != null)
+//			jsonBuffer.append(strLine);
+//
+//		//ServletContext context = getServletContext( );
+//		//context.log(jsonBuffer.toString());
+//
+//		JSONObject reqJson = new JSONObject();
+//		JSONParser parser = new JSONParser();
+//
+//		try {
+//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+//		} catch(ParseException e) {
+//			System.out.println("변환에 실패");
+//			e.printStackTrace();
+//		}
+//
+//		JSONObject resJson = new JSONObject();
+//		if( DeleteData(reqJson) )
+//			resJson.put("result", "OK");
+//		else
+//			resJson.put("result", "Fail");
+//
+//        response.setContentType("application/json");
+//        PrintWriter out = response.getWriter();
+//        out.println(resJson.toString());
+		DeleteData(id);
     }
 	
- 	public boolean DeleteData(JSONObject jsonData)
+ 	public boolean DeleteData(int id)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -79,7 +83,7 @@ public class SubjectDelete extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          int id = Integer.parseInt(jsonData.get("ID").toString());
+
           if( id > 0)
           {
 	          String strQuery = String.format("delete from subject where ID = %d", id);

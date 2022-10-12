@@ -39,40 +39,43 @@ public class SubjectInsert extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-		StringBuffer jsonBuffer = new StringBuffer();
-		String strLine = null;
 
-		BufferedReader reader = request.getReader();
-		while ((strLine = reader.readLine()) != null)
-			jsonBuffer.append(strLine);
+		String name = request.getParameter("Name");
 
-		//ServletContext context = getServletContext( );
-		//context.log(jsonBuffer.toString());
-		
-		JSONObject reqJson = new JSONObject();
-		JSONParser parser = new JSONParser();
-		
-		try {
-			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-		} catch(ParseException e) {
-			System.out.println("변환에 실패");
-			e.printStackTrace();
-		}
+//		StringBuffer jsonBuffer = new StringBuffer();
+//		String strLine = null;
+//
+//		BufferedReader reader = request.getReader();
+//		while ((strLine = reader.readLine()) != null)
+//			jsonBuffer.append(strLine);
+//
+//		//ServletContext context = getServletContext( );
+//		//context.log(jsonBuffer.toString());
+//
+//		JSONObject reqJson = new JSONObject();
+//		JSONParser parser = new JSONParser();
+//
+//		try {
+//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+//		} catch(ParseException e) {
+//			System.out.println("변환에 실패");
+//			e.printStackTrace();
+//		}
 			
 		//context.log(reqJson.get("Name").toString());
-
-		JSONObject resJson = new JSONObject();
-		if( InsertData(reqJson) )
-			resJson.put("result", "OK");
-		else
-			resJson.put("result", "Fail");
-				
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.println(resJson.toString());
+		InsertData(name);
+//		JSONObject resJson = new JSONObject();
+//		if( InsertData(reqJson) )
+//			resJson.put("result", "OK");
+//		else
+//			resJson.put("result", "Fail");
+//
+//        response.setContentType("application/json");
+//        PrintWriter out = response.getWriter();
+//        out.println(resJson.toString());
     }
 	
-	public boolean InsertData(JSONObject jsonData)
+	public boolean InsertData(String name)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -80,7 +83,7 @@ public class SubjectInsert extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          String strQuery = String.format("insert into subject (Name) values ('%s')", jsonData.get("Name").toString());
+          String strQuery = String.format("insert into subject (Name) values ('%s')", name);
           //ServletContext context = getServletContext( );
   		  //context.log(strQuery);
 

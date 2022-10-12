@@ -40,28 +40,31 @@ public class SubjectSearch extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-		StringBuffer jsonBuffer = new StringBuffer();
-		String strLine = null;
 
-		BufferedReader reader = request.getReader();
-		while ((strLine = reader.readLine()) != null)
-			jsonBuffer.append(strLine);
+		int id = Integer.parseInt(request.getParameter("Id"));
 
-		ServletContext context = getServletContext( );
-		context.log(jsonBuffer.toString());
-		
-		JSONObject reqJson = new JSONObject();
-		JSONParser parser = new JSONParser();
-		
-		try {
-			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-		} catch(ParseException e) {
-			System.out.println("변환에 실패");
-			e.printStackTrace();
-		}
+//		StringBuffer jsonBuffer = new StringBuffer();
+//		String strLine = null;
+//
+//		BufferedReader reader = request.getReader();
+//		while ((strLine = reader.readLine()) != null)
+//			jsonBuffer.append(strLine);
+//
+//		ServletContext context = getServletContext( );
+//		context.log(jsonBuffer.toString());
+//
+//		JSONObject reqJson = new JSONObject();
+//		JSONParser parser = new JSONParser();
+//
+//		try {
+//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+//		} catch(ParseException e) {
+//			System.out.println("변환에 실패");
+//			e.printStackTrace();
+//		}
 			
-		context.log(reqJson.get("ID").toString());
-		Vector<SubjectBean> subjectList = SearchData(reqJson);
+		//context.log(reqJson.get("ID").toString());
+		Vector<SubjectBean> subjectList = SearchData(id);
 
 		if(subjectList.size() > 0)
 		{
@@ -92,7 +95,7 @@ public class SubjectSearch extends HttpServlet
 		}
     }
 	
-	public Vector<SubjectBean> SearchData(JSONObject jsonData)
+	public Vector<SubjectBean> SearchData(int id)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -103,13 +106,13 @@ public class SubjectSearch extends HttpServlet
        {
           String strQuery;
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          if( Integer.parseInt(jsonData.get("ID").toString()) == -1 )
+          if( id == -1 )
           {
         	  strQuery = "select * from subject";
           }
           else
           {
-        	  strQuery = String.format("select * from subject where ID = %d", Integer.parseInt(jsonData.get("ID").toString()));
+        	  strQuery = String.format("select * from subject where ID = %d", id);
           }
           ServletContext context = getServletContext( );
   		  context.log(strQuery);

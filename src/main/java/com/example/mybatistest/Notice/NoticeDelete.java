@@ -22,17 +22,17 @@ import java.util.Vector;
 public class NoticeDelete extends HttpServlet 
 {
 	private static final long serialVersionUID = 2L;
- 	private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
- 	private final String JDBC_URL = "jdbc:mysql://database-1.cuqcz3ydffen.ap-northeast-2.rds.amazonaws.com:3306/test";
- 	private final String USER = "admin";
- 	private final String PASS = "testadmindb";
+	private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	private final String JDBC_URL = "jdbc:mysql://database-1.cuqcz3ydffen.ap-northeast-2.rds.amazonaws.com:3306/test";
+	private final String USER = "admin";
+	private final String PASS = "testadmindb";
  	
  	public NoticeDelete() 
  	{
  		try {
  			Class.forName(JDBC_DRIVER);
  		} catch(Exception e) {
- 			System.out.println("Error jdbc error");
+ 			System.out.println("Error : JDBC ����̹� �ε� ����");
  		}
 	 }
 
@@ -40,42 +40,42 @@ public class NoticeDelete extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
+//		StringBuffer jsonBuffer = new StringBuffer();
+//		String strLine = null;
+//
+//		BufferedReader reader = request.getReader();
+//		while ((strLine = reader.readLine()) != null)
+//			jsonBuffer.append(strLine);
+//
+//		//ServletContext context = getServletContext( );
+//		//context.log(jsonBuffer.toString());
+//
+//		JSONObject reqJson = new JSONObject();
+//		JSONParser parser = new JSONParser();
+//
+//		try {
+//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
+//		} catch(ParseException e) {
+//			System.out.println("��ȯ��s����");
+//			e.printStackTrace();
+//		}
+//
+//		JSONObject resJson = new JSONObject();
+//		if( DeleteData(reqJson) )
+//			resJson.put("result", "OK");
+//		else
+//			resJson.put("result", "Fail");
+//
+//        response.setContentType("application/json");
+//        PrintWriter out = response.getWriter();
+//        out.println(resJson.toString());
 
-		int id = Integer.parseInt(request.getParameter("ID"));
-
-
-		StringBuffer jsonBuffer = new StringBuffer();
-		String strLine = null;
-
-		BufferedReader reader = request.getReader();
-		while ((strLine = reader.readLine()) != null)
-			jsonBuffer.append(strLine);
-
-		//ServletContext context = getServletContext( );
-		//context.log(jsonBuffer.toString());
-
-		JSONObject reqJson = new JSONObject();
-		JSONParser parser = new JSONParser();
-
-		try {
-			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-		} catch(ParseException e) {
-			System.out.println("json parsing error");
-			e.printStackTrace();
-		}
-
-		JSONObject resJson = new JSONObject();
-		if( DeleteData(reqJson) )
-			resJson.put("result", "OK");
-		else
-			resJson.put("result", "Fail");
-				
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.println(resJson.toString());
+		int id = Integer.parseInt(request.getParameter("Id"));
+		int subjectid = Integer.parseInt(request.getParameter("SubjectId"));
+		DeleteData(id, subjectid);
     }
 	
- 	public boolean DeleteData(JSONObject jsonData)
+ 	public boolean DeleteData(int id,int subjectid)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -83,8 +83,8 @@ public class NoticeDelete extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          int id = Integer.parseInt(jsonData.get("ID").toString());
-          int subjectid = Integer.parseInt(jsonData.get("SubjectID").toString());
+//          int id = Integer.parseInt(jsonData.get("ID").toString());
+//          int subjectid = Integer.parseInt(jsonData.get("SubjectID").toString());
           
           if( subjectid > 0)
           {

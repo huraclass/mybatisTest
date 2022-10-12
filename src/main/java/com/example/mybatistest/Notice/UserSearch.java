@@ -1,7 +1,6 @@
 package com.example.mybatistest.Notice;
 
 import java.io.*;
-import java.lang.Integer;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +17,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-@WebServlet(urlPatterns = "/Subject/Modify")
-public class SubjectModify extends HttpServlet 
+@WebServlet(urlPatterns = "/User/Search")
+public class UserSearch extends HttpServlet 
 {
 	private static final long serialVersionUID = 2L;
 	private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -27,7 +26,7 @@ public class SubjectModify extends HttpServlet
 	private final String USER = "admin";
 	private final String PASS = "testadmindb";
  	
- 	public SubjectModify() 
+ 	public UserSearch() 
  	{
  		try {
  			Class.forName(JDBC_DRIVER);
@@ -40,9 +39,8 @@ public class SubjectModify extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-
-		int id = Integer.parseInt(request.getParameter("Id"));
-		String name = request.getParameter("Name");
+		int ID = Integer.parseInt(request.getParameter("ID"));
+		int Password = Integer.parseInt(request.getParameter("Password"));
 
 //		StringBuffer jsonBuffer = new StringBuffer();
 //		String strLine = null;
@@ -63,42 +61,49 @@ public class SubjectModify extends HttpServlet
 //			System.out.println("변환에 실패");
 //			e.printStackTrace();
 //		}
-
-		ModifyData(id, name);
 			
-//		JSONObject resJson = new JSONObject();
-//		if( ModifyData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
+		//context.log(reqJson.get("Name").toString());
+
+		JSONObject resJson = new JSONObject();
+		if( SearchData(ID,Password) )
+			resJson.put("result", "OK");
+		else
+			resJson.put("result", "Fail");
+				
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(resJson.toString());
+
     }
 	
- 	public boolean ModifyData(int id,String name)
+	public boolean SearchData(int Id,int Password)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
-       Boolean rtn = null;
+	   ResultSet rs = null;
+
+//       Id = jsonData.get("Id").toString();
+//       Password = jsonData.get("Password").toString();
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
+          String strQuery = String.format("select * from user where id = '%s' and password = '%s'", Id, Password);
+          //ServletContext context = getServletContext( );
+  		  //context.log(strQuery);
 
-          if( id > 0)
-          {
-	          String strQuery = String.format("update subject set Name = '%s'where ID = %d",name, id);
-	          //ServletContext context = getServletContext( );
-	          //context.log(strQuery);
-	
-	  		  stmt = conn.createStatement();
-	          rtn = stmt.execute(strQuery);
-	          return true;
+  		  stmt = conn.createStatement();
+          rs = stmt.executeQuery(strQuery);
+          
+          int count = 0;
+          while(rs.next()){
+        	  count++;
           }
-          else
-	          return false;
-        	  
+          
+          if(count == 0) {
+        	  return false;
+          }
+          
+          return true;
        } catch (Exception ex) {
           System.out.println("Exception" + ex);
        } finally {
@@ -106,7 +111,7 @@ public class SubjectModify extends HttpServlet
 	      if(conn!=null) try{conn.close();}catch(SQLException e){}
        }
        
-       return true;
+       return false;
 	}
 }
 
