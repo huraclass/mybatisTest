@@ -50,7 +50,6 @@ public class NoticeDelete extends HttpServlet
 //		//ServletContext context = getServletContext( );
 //		//context.log(jsonBuffer.toString());
 //
-//		JSONObject reqJson = new JSONObject();
 //		JSONParser parser = new JSONParser();
 //
 //		try {
@@ -60,22 +59,24 @@ public class NoticeDelete extends HttpServlet
 //			e.printStackTrace();
 //		}
 //
-//		JSONObject resJson = new JSONObject();
-//		if( DeleteData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
-
+//		JSONObject reqJson = new JSONObject();
 		int id = Integer.parseInt(request.getParameter("Id"));
-		int subjectid = Integer.parseInt(request.getParameter("SubjectId"));
-		DeleteData(id, subjectid);
+		int subjectID = Integer.parseInt(request.getParameter("SubjectId"));
+		JSONArray j = new JSONArray();
+		JSONObject resJson = new JSONObject();
+		if( DeleteData(id,subjectID) ) {
+			resJson.put("result", "OK");
+		}
+		else {
+			resJson.put("result", "Fail");
+		}
+		j.add(resJson);
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+		out.println(j.toString());
     }
 	
- 	public boolean DeleteData(int id,int subjectid)
+ 	public boolean DeleteData(int id,int subjectID)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -84,11 +85,11 @@ public class NoticeDelete extends HttpServlet
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
 //          int id = Integer.parseInt(jsonData.get("ID").toString());
-//          int subjectid = Integer.parseInt(jsonData.get("SubjectID").toString());
+//          int subjectID = Integer.parseInt(jsonData.get("SubjectID").toString());
           
-          if( subjectid > 0)
+          if( subjectID > 0)
           {
-	          String strQuery = String.format("delete from notice where SubjectID = %d", subjectid);
+	          String strQuery = String.format("delete from notice where SubjectID = %d", subjectID);
 	          //ServletContext context = getServletContext( );
 	          //context.log(strQuery);
 	

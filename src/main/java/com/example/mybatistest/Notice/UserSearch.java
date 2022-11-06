@@ -39,55 +39,40 @@ public class UserSearch extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-		int ID = Integer.parseInt(request.getParameter("ID"));
-		int Password = Integer.parseInt(request.getParameter("Password"));
-
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-//
-//		//ServletContext context = getServletContext( );
-//		//context.log(jsonBuffer.toString());
-//
-//		JSONObject reqJson = new JSONObject();
-//		JSONParser parser = new JSONParser();
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("변환에 실패");
-//			e.printStackTrace();
-//		}
-			
-		//context.log(reqJson.get("Name").toString());
+		String ID = request.getParameter("Id");
+		String Password = request.getParameter("Password");
 
 		JSONObject resJson = new JSONObject();
-		if( SearchData(ID,Password) )
-			resJson.put("result", "OK");
-		else
-			resJson.put("result", "Fail");
-				
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.println(resJson.toString());
-
+		JSONArray j;
+//		if( SearchData(ID,Password) ){
+//			resJson.put("id", ID);
+//		}
+//		else{
+//			resJson.put("result", "Fail");
+//		}
+		j = SearchData(ID, Password);
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
-	public boolean SearchData(int Id,int Password)
+	public JSONArray SearchData(String Id,String Password)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
 	   ResultSet rs = null;
-
+	   JSONObject resJson = new JSONObject();
+	   JSONArray j = new JSONArray();
+	   int userCode = 0;
 //       Id = jsonData.get("Id").toString();
 //       Password = jsonData.get("Password").toString();
 
+//select member.user_code
+//from member left join user on member.user_name = user.nickname
+//where user.id = 'test' and user.password = '1234'
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          String strQuery = String.format("select * from user where id = '%s' and password = '%s'", Id, Password);
+          String strQuery = String.format("select user_code from member where id = '%s' and user_pass = '%s'", Id, Password);
           //ServletContext context = getServletContext( );
   		  //context.log(strQuery);
 
@@ -97,21 +82,26 @@ public class UserSearch extends HttpServlet
           int count = 0;
           while(rs.next()){
         	  count++;
+			  userCode = rs.getInt(1);
           }
-          
+		   System.out.println("userCode = " + userCode);
           if(count == 0) {
-        	  return false;
+			  resJson.put("result", "Fail");
           }
-          
-          return true;
+		  else{
+			  resJson.put("result", "OK");
+			  resJson.put("userCode", userCode);
+		  }
+		   j.add(resJson);
+
+          return j;
        } catch (Exception ex) {
           System.out.println("Exception" + ex);
        } finally {
 		  if(stmt!=null) try{stmt.close();}catch(SQLException e){}
 	      if(conn!=null) try{conn.close();}catch(SQLException e){}
        }
-       
-       return false;
+	   return null;
 	}
 }
 

@@ -87,11 +87,12 @@ public class SubjectSearch extends HttpServlet
 		else
 		{
 			JSONObject resJson = new JSONObject();
+			JSONArray j = new JSONArray();
 			resJson.put("result", "FAIL");
-
+			j.add(resJson);
 			response.setContentType("application/json");
 	        PrintWriter out = response.getWriter();
-	        out.println(resJson.toString());
+	        out.println(j.toString());
 		}
     }
 	

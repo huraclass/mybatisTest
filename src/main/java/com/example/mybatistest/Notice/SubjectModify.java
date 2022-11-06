@@ -41,8 +41,6 @@ public class SubjectModify extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-		int id = Integer.parseInt(request.getParameter("Id"));
-		String name = request.getParameter("Name");
 
 //		StringBuffer jsonBuffer = new StringBuffer();
 //		String strLine = null;
@@ -64,17 +62,18 @@ public class SubjectModify extends HttpServlet
 //			e.printStackTrace();
 //		}
 
-		ModifyData(id, name);
-			
-//		JSONObject resJson = new JSONObject();
-//		if( ModifyData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
+		int id = Integer.parseInt(request.getParameter("Id"));
+		String name = request.getParameter("Name");
+		JSONArray j = new JSONArray();
+		JSONObject resJson = new JSONObject();
+		if( ModifyData(id,name) )
+			resJson.put("result", "OK");
+		else
+			resJson.put("result", "Fail");
+		j.add(resJson);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
  	public boolean ModifyData(int id,String name)

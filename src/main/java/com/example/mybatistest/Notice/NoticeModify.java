@@ -8,15 +8,11 @@ import javax.servlet.annotation.WebServlet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
 
 @WebServlet(urlPatterns = "/Notice/Modify")
 public class NoticeModify extends HttpServlet 
@@ -64,19 +60,21 @@ public class NoticeModify extends HttpServlet
 //			e.printStackTrace();
 //		}
 //
-//		JSONObject resJson = new JSONObject();
-//		if( ModifyData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
-
+		int id = Integer.parseInt(request.getParameter("Id"));
 		String name = request.getParameter("Name");
-		int id = Integer.parseInt(request.getParameter("ID"));
 		String content = request.getParameter("Content");
+		JSONObject resJson = new JSONObject();
+		JSONArray j = new JSONArray();
+		if( ModifyData(id,name,content) ) {
+			resJson.put("result", "OK");
+		}
+		else {
+			resJson.put("result", "Fail");
+		}
+		j.add(resJson);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
  	public boolean ModifyData(int id,String name,String content)

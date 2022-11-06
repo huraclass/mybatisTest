@@ -41,8 +41,8 @@ public class NoticeSearch extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-		int ID = Integer.parseInt(request.getParameter("id"));
-		int subjectID = Integer.parseInt(request.getParameter("SubjectID"));
+		int ID = Integer.parseInt(request.getParameter("Id"));
+		int subjectID = Integer.parseInt(request.getParameter("SubjectId"));
 		String name = request.getParameter("Name");
 		String content = request.getParameter("Content");
 
@@ -92,12 +92,13 @@ public class NoticeSearch extends HttpServlet
 		}
 		else
 		{
+			JSONArray j = new JSONArray();
 			JSONObject resJson = new JSONObject();
 			resJson.put("result", "FAIL");
-
+			j.add(resJson);
 			response.setContentType("application/json");
 	        PrintWriter out = response.getWriter();
-	        out.println(resJson.toString());
+	        out.println(j.toString());
 		}
     }
 	

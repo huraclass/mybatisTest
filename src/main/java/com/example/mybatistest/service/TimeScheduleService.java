@@ -3,6 +3,7 @@ package com.example.mybatistest.service;
 import com.example.mybatistest.domain.TimeSchedule;
 import com.example.mybatistest.mybatis.TimeScheduleMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +22,10 @@ public class TimeScheduleService {
     public void insertTimeSchedule(TimeSchedule timeSchedule) {
         mapper.insertIntoTimeSchedule(timeSchedule);
     }
+
     //delete
     public void deleteTimeScheduleService(int userCode) {
         mapper.deleteTimeScheduleByUserCode(userCode);
     }
     //update
-
-
-
 }

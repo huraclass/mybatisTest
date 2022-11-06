@@ -41,7 +41,6 @@ public class SubjectDelete extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-		int id = Integer.parseInt(request.getParameter("Id"));
 
 //		StringBuffer jsonBuffer = new StringBuffer();
 //		String strLine = null;
@@ -63,16 +62,19 @@ public class SubjectDelete extends HttpServlet
 //			e.printStackTrace();
 //		}
 //
-//		JSONObject resJson = new JSONObject();
-//		if( DeleteData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
-		DeleteData(id);
+		int id = Integer.parseInt(request.getParameter("Id"));
+		JSONObject resJson = new JSONObject();
+		JSONArray j = new JSONArray();
+		if( DeleteData(id)) {
+			resJson.put("result", "OK");
+		}
+		else {
+			resJson.put("result", "Fail");
+		}
+		j.add(resJson);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
  	public boolean DeleteData(int id)

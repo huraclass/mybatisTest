@@ -42,43 +42,20 @@ public class UserInsert extends HttpServlet
 
 		String id = request.getParameter("Id");
 		String pass = request.getParameter("Password");
-		String name = request.getParameter("NickName");
 
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-//
-//		//ServletContext context = getServletContext( );
-//		//context.log(jsonBuffer.toString());
-//
-//		JSONObject reqJson = new JSONObject();
-//		JSONParser parser = new JSONParser();
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("변환에 실패");
-//			e.printStackTrace();
-//		}
-			
-		//context.log(reqJson.get("Name").toString());
-
-		//JSONObject resJson = new JSONObject();
-		InsertData(id, pass, name);
-//		if( InsertData(id,pass,name) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
+		JSONObject resJson = new JSONObject();
+		JSONArray j = new JSONArray();
+		if( InsertData(id,pass) )
+			resJson.put("result", "OK");
+		else
+			resJson.put("result", "Fail");
+		j.add(resJson);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
-	public boolean InsertData(String Id,String Password,String NickName)
+	public boolean InsertData(String Id,String Password)
 	{
 	   Connection conn = null;
 	   Statement stmt = null;
@@ -94,12 +71,14 @@ public class UserInsert extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          String strQuery = String.format("insert into user (id, password, nickname) values ('%s', '%s', '%s')", Id, Password, NickName);
+//          String strQuery = String.format("insert into user (id, password, nickname) values ('%s', '%s', '%s')", Id, Password, NickName);
+		   String sql = String.format("insert into member(user_pass,id) values ('%s', '%s')", Password,Id);
+//		   insert into member (user_pass,id) values('3214','marin')
           //ServletContext context = getServletContext( );
   		  //context.log(strQuery);
 
   		  stmt = conn.createStatement();
-          rtn = stmt.execute(strQuery);
+          rtn = stmt.execute(sql);
           return true;
        } catch (Exception ex) {
           System.out.println("Exception" + ex);

@@ -3,6 +3,7 @@ package com.example.mybatistest.service;
 import com.example.mybatistest.domain.Calender;
 import com.example.mybatistest.mybatis.CalenderMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -30,7 +31,6 @@ public class CalenderService {
 
     //update
     public void updateCalender(Calender calender) {
-
         try {
             mapper.updateCalender(calender);
         } catch (Exception e) {

@@ -40,7 +40,6 @@ public class SubjectInsert extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-		String name = request.getParameter("Name");
 
 //		StringBuffer jsonBuffer = new StringBuffer();
 //		String strLine = null;
@@ -61,18 +60,21 @@ public class SubjectInsert extends HttpServlet
 //			System.out.println("변환에 실패");
 //			e.printStackTrace();
 //		}
-			
+
 		//context.log(reqJson.get("Name").toString());
-		InsertData(name);
-//		JSONObject resJson = new JSONObject();
-//		if( InsertData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
-//
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
+
+
+		String name = request.getParameter("Name");
+		JSONObject resJson = new JSONObject();
+		JSONArray j = new JSONArray();
+		if( InsertData(name) )
+			resJson.put("result", "OK");
+		else
+			resJson.put("result", "Fail");
+		j.add(resJson);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        out.println(j.toString());
     }
 	
 	public boolean InsertData(String name)

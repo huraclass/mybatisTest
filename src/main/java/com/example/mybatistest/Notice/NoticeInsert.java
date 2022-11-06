@@ -7,15 +7,13 @@ import javax.servlet.annotation.WebServlet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Vector;
+
 
 @WebServlet(urlPatterns = "/Notice/Insert")
 public class NoticeInsert extends HttpServlet 
@@ -61,20 +59,23 @@ public class NoticeInsert extends HttpServlet
 //
 //		//context.log(reqJson.get("Name").toString());
 //
-//		JSONObject resJson = new JSONObject();
-//		if( InsertData(reqJson) )
-//			resJson.put("result", "OK");
-//		else
-//			resJson.put("result", "Fail");
 //
-//        response.setContentType("application/json");
-//        PrintWriter out = response.getWriter();
-//        out.println(resJson.toString());
-
-		int id = Integer.parseInt(request.getParameter("SubjectID"));
+		int id = Integer.parseInt(request.getParameter("SubjectId"));
 		String name = request.getParameter("Name");
-		String content = request.getParameter("content");
-    }
+		String content = request.getParameter("Content");
+		JSONArray j = new JSONArray();
+		JSONObject resJson = new JSONObject();
+		if( InsertData(id,name,content) ) {
+			resJson.put("result", "OK");
+		}
+		else {
+			resJson.put("result", "Fail");
+		}
+		j.add(resJson);
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		out.println(j.toString());
+	}
 	
 	public boolean InsertData(int id,String name,String content)
 	{
