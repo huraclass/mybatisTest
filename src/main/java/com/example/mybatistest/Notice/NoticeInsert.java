@@ -37,29 +37,6 @@ public class NoticeInsert extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-
-		//ServletContext context = getServletContext( );
-		//context.log(jsonBuffer.toString());
-		
-//		JSONObject reqJson = new JSONObject();
-//		JSONParser parser = new JSONParser();
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("변환에 실패");
-//			e.printStackTrace();
-//		}
-//
-//		//context.log(reqJson.get("Name").toString());
-//
-//
 		int id = Integer.parseInt(request.getParameter("SubjectId"));
 		String name = request.getParameter("Name");
 		String content = request.getParameter("Content");
@@ -85,12 +62,9 @@ public class NoticeInsert extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-//          int id = Integer.parseInt(jsonData.get("SubjectID").toString());
           if( id > 0)
           {
 	          String strQuery = String.format("insert into notice (SubjectID, Name, Content) values (%d, '%s', '%s')", id,name,content);
-	          //ServletContext context = getServletContext( );
-	  		  //context.log(strQuery);
 	
 	  		  stmt = conn.createStatement();
 	          rtn = stmt.execute(strQuery);

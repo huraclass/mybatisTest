@@ -40,26 +40,6 @@ public class NoticeDelete extends HttpServlet
 	public void service(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException 
 	{
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-//
-//		//ServletContext context = getServletContext( );
-//		//context.log(jsonBuffer.toString());
-//
-//		JSONParser parser = new JSONParser();
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("��ȯ��s����");
-//			e.printStackTrace();
-//		}
-//
-//		JSONObject reqJson = new JSONObject();
 		int id = Integer.parseInt(request.getParameter("Id"));
 		int subjectID = Integer.parseInt(request.getParameter("SubjectId"));
 		JSONArray j = new JSONArray();
@@ -84,14 +64,10 @@ public class NoticeDelete extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-//          int id = Integer.parseInt(jsonData.get("ID").toString());
-//          int subjectID = Integer.parseInt(jsonData.get("SubjectID").toString());
           
           if( subjectID > 0)
           {
 	          String strQuery = String.format("delete from notice where SubjectID = %d", subjectID);
-	          //ServletContext context = getServletContext( );
-	          //context.log(strQuery);
 	
 	  		  stmt = conn.createStatement();
 	          rtn = stmt.execute(strQuery);
@@ -102,8 +78,6 @@ public class NoticeDelete extends HttpServlet
 	          if( id > 0 )
 	          {
 		          String strQuery = String.format("delete from notice where ID = %d", id);
-		          //ServletContext context = getServletContext( );
-		          //context.log(strQuery);
 		
 		  		  stmt = conn.createStatement();
 		          rtn = stmt.execute(strQuery);

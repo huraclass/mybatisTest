@@ -60,22 +60,11 @@ public class UserInsert extends HttpServlet
 	   Connection conn = null;
 	   Statement stmt = null;
        Boolean rtn = null;
-       
-//       String Id;
-//       String Password;
-//       String NickName;
-//
-//       Id = jsonData.get("Id").toString();
-//       Password = jsonData.get("Password").toString();
-//       NickName = jsonData.get("NickName").toString();
+
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-//          String strQuery = String.format("insert into user (id, password, nickname) values ('%s', '%s', '%s')", Id, Password, NickName);
 		   String sql = String.format("insert into member(user_pass,id) values ('%s', '%s')", Password,Id);
-//		   insert into member (user_pass,id) values('3214','marin')
-          //ServletContext context = getServletContext( );
-  		  //context.log(strQuery);
 
   		  stmt = conn.createStatement();
           rtn = stmt.execute(sql);

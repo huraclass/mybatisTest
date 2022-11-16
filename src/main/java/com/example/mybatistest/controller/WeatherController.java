@@ -19,8 +19,6 @@ public class WeatherController {
 
     @RequestMapping("/select")
     public List<Weather> weatherSelectController() {
-        List<Weather> list = new ArrayList<>();
-        list.add(weatherService.getWeather());
-        return list;
+        return weatherService.getCurrentWeather();
     }
 }

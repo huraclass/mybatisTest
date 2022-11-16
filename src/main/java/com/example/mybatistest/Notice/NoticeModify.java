@@ -37,29 +37,6 @@ public class NoticeModify extends HttpServlet
 			throws IOException, ServletException 
 	{
 
-
-
-
-//		StringBuffer jsonBuffer = new StringBuffer();
-//		String strLine = null;
-//
-//		BufferedReader reader = request.getReader();
-//		while ((strLine = reader.readLine()) != null)
-//			jsonBuffer.append(strLine);
-//
-//		//ServletContext context = getServletContext( );
-//		//context.log(jsonBuffer.toString());
-//
-//		JSONObject reqJson = new JSONObject();
-//		JSONParser parser = new JSONParser();
-//
-//		try {
-//			reqJson = (JSONObject)parser.parse(jsonBuffer.toString());
-//		} catch(ParseException e) {
-//			System.out.println("변환에 실패");
-//			e.printStackTrace();
-//		}
-//
 		int id = Integer.parseInt(request.getParameter("Id"));
 		String name = request.getParameter("Name");
 		String content = request.getParameter("Content");
@@ -85,7 +62,6 @@ public class NoticeModify extends HttpServlet
 
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-//          int id = Integer.parseInt(jsonData.get("ID").toString());
           if( id > 0)
           {
         	  String strUpdate = "";
@@ -99,8 +75,6 @@ public class NoticeModify extends HttpServlet
         			  strUpdate = content;
         	  
 	          String strQuery = String.format("update notice set %s where ID = %d", strUpdate, id);
-	          //ServletContext context = getServletContext( );
-	          //context.log(strQuery);
 	
 	  		  stmt = conn.createStatement();
 	          rtn = stmt.execute(strQuery);
