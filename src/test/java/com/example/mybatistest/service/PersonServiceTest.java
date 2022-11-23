@@ -1,23 +1,7 @@
 package com.example.mybatistest.service;
 
 import com.example.mybatistest.controller.CalenderController;
-import com.example.mybatistest.domain.Calender;
-import com.example.mybatistest.domain.Person;
-import com.example.mybatistest.domain.UserCode;
-import com.example.mybatistest.mybatis.Mapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PersonServiceTest {
     @Autowired

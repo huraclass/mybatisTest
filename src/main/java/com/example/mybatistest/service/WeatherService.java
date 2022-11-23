@@ -47,7 +47,7 @@ public class WeatherService {
     }
 //@Scheduled(cron = "*/1 * * * * *")
 
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 0 13 * * *")
     private void insertFutureWeather() throws Exception {
         weatherMapper.deleteAllWeatherFuture();
         weatherMapper.deleteAllWeatherCurrent();
@@ -78,6 +78,34 @@ public class WeatherService {
         }
         weather.forEach(weatherFuture -> weatherMapper.insertFutureWeather(weatherFuture));
     }
+//    @Scheduled(cron = "*/1 * * * * *")
+//    private void insertFutureWeather() throws Exception {
+//        List<WeatherFuture> weather = new ArrayList<>();
+//        JSONObject json = getWeatherInfoToJsonObject();
+//        JSONArray array = (JSONArray) json.get("daily");
+//
+//        for (int i = 1; i < array.size(); i++) {
+//            JSONObject futureJson = (JSONObject) array.get(i);
+//            JSONObject temp = (JSONObject) futureJson.get("temp");
+//            JSONArray wea = (JSONArray) futureJson.get("weather");
+//            JSONObject futureWeather = (JSONObject) wea.get(0);
+//
+//            double pip = 0;
+//            double max = (double)temp.get("max");
+//            double min = (double)temp.get("min");
+//            if (!futureJson.get("pop").getClass().getName().equals("java.lang.Long")) {
+//                pip = (double) futureJson.get("pop");
+//            }
+//            weather.add(WeatherFuture.builder()
+//                    .weatherState((String) futureWeather.get("description"))
+//                    .time((long) futureJson.get("dt"))
+//                    .maxTemp(max)
+//                    .minTemp(min)
+//                    .pop(pip)
+//                    .build());
+//        }
+//        weather.forEach(weatherFuture -> weatherMapper.insertFutureWeather(weatherFuture));
+//    }
 
 
     public List<Weather> getCurrentWeather() {

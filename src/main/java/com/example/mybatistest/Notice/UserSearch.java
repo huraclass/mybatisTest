@@ -5,6 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 
+import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-
+@Log4j2
 @WebServlet(urlPatterns = "/User/Search")
 public class UserSearch extends HttpServlet 
 {
@@ -41,15 +42,9 @@ public class UserSearch extends HttpServlet
 	{
 		String ID = request.getParameter("Id");
 		String Password = request.getParameter("Password");
-
+		log.info("Id" + ID);
 		JSONObject resJson = new JSONObject();
 		JSONArray j;
-//		if( SearchData(ID,Password) ){
-//			resJson.put("id", ID);
-//		}
-//		else{
-//			resJson.put("result", "Fail");
-//		}
 		j = SearchData(ID, Password);
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
@@ -64,6 +59,7 @@ public class UserSearch extends HttpServlet
 	   JSONObject resJson = new JSONObject();
 	   JSONArray j = new JSONArray();
 	   int userCode = 0;
+	   int grade = 0;
 //       Id = jsonData.get("Id").toString();
 //       Password = jsonData.get("Password").toString();
 
@@ -72,7 +68,7 @@ public class UserSearch extends HttpServlet
 //where user.id = 'test' and user.password = '1234'
        try {
           conn = DriverManager.getConnection(JDBC_URL, USER, PASS);
-          String strQuery = String.format("select user_code from member where id = '%s' and user_pass = '%s'", Id, Password);
+          String strQuery = String.format("select user_code , grade from member where id = '%s' and user_pass = '%s'", Id, Password);
           //ServletContext context = getServletContext( );
   		  //context.log(strQuery);
 
@@ -83,20 +79,21 @@ public class UserSearch extends HttpServlet
           while(rs.next()){
         	  count++;
 			  userCode = rs.getInt(1);
+			  grade = rs.getInt(2);
           }
-		   System.out.println("userCode = " + userCode);
           if(count == 0) {
 			  resJson.put("result", "Fail");
           }
 		  else{
 			  resJson.put("result", "OK");
 			  resJson.put("userCode", userCode);
+			  resJson.put("grade", grade);
 		  }
 		   j.add(resJson);
 
           return j;
-       } catch (Exception ex) {
-          System.out.println("Exception" + ex);
+       } catch (Exception e) {
+		   e.printStackTrace();
        } finally {
 		  if(stmt!=null) try{stmt.close();}catch(SQLException e){}
 	      if(conn!=null) try{conn.close();}catch(SQLException e){}
